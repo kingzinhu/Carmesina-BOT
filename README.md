@@ -1,2 +1,2 @@
 # Carmesina
- A Discord BOT made in C3, used to lear programming.
+ A Discord BOT made in C#, used to learn programming.
