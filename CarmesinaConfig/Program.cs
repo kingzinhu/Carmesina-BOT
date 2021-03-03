@@ -81,8 +81,9 @@ namespace CarmesinaConfig
             return Task.Run(async () =>
             {
                DiscordChannel canal_executedcommands = await _client.GetChannelAsync(816391639681597469);
-               await _client.SendMessageAsync(canal_executedcommands, $"> <:8bitplus:816411488105005105> Used command: `{e.Command.Name}`" +
-                   $"\n> Execution author: `{e.Context.Member.DisplayName}`" +
+               await _client.SendMessageAsync(canal_executedcommands, $"> <:8bitplus:816411488105005105> **Command used " +
+                   $"\nCommand: `{e.Command.Name}`" +
+                   $"\n> Execution author: `{e.Context.Member.Username}`" +
                    $"\n> Guild: `{e.Context.Guild.Name}`" +
                    $"\n> Channel: `{e.Context.Channel.Name}`" +
                    $"\n```{e.Context.Message.Content}```");
