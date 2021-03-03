@@ -15,7 +15,7 @@ namespace CarmesinaConfig.comandos
         public async Task Ping(CommandContext ctx)
         {
             await ctx.TriggerTypingAsync();
-            await ctx.RespondAsync($":ping_pong: Pong! The current latency is {ctx.Client.Ping.ToString()}ms");
+            await ctx.RespondAsync($":ping_pong: Pong! The current latency is {ctx.Client.Ping}ms");
         }
 
         [Command("avatar")]
@@ -28,5 +28,21 @@ namespace CarmesinaConfig.comandos
             await ctx.RespondAsync(user.AvatarUrl);
         }
 
+        [Command("say")]
+        [Description("Repeat the arguments you put after the command")]
+        public async Task Say(CommandContext ctx, [RemainingText] string args = null)
+        {
+            await ctx.TriggerTypingAsync();
+            if (args == null)
+            {
+                await ctx.RespondAsync($"> <:shy:816399461675696159> i think you forgot to say something," +
+                    $" {ctx.Member.Mention}... haven't ya?");
+            }
+            else
+            {
+                await ctx.RespondAsync(args);
+            }
+            await ctx.Message.DeleteAsync();
+        }
     }
 }
