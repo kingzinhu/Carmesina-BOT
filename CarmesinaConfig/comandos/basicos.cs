@@ -35,19 +35,29 @@ namespace CarmesinaConfig.comandos
 
         [Command("say")]
         [Description("Repeat the arguments you put after the command")]
-        public async Task Say(CommandContext ctx, [RemainingText] string args = null)
+        public async Task Say(CommandContext ctx, DiscordChannel canal, [RemainingText] string texto)
         {
             await ctx.TriggerTypingAsync();
-            if (args == null)
-            {
-                await ctx.RespondAsync($"> <:shy:816399461675696159> i think you forgot to say something," +
+            await canal.SendMessageAsync(args);
+            try { await ctx.Message.DeleteAsync(); }
+            catch() {};
+        }
+        [Command("say")]
+        public async Task Say(CommandContext ctx, [RemainingText] string texto)
+        {
+            await ctx.TriggerTypingAsync();
+            await ctx.RespondAsync(args);
+            try { await ctx.Message.DeleteAsync(); }
+            catch() {};
+        }
+        [Command("say")]
+        public async Task Say(CommandContext ctx, DiscordChannel canal = null)
+        {
+            await ctx.TriggerTypingAsync();
+            await ctx.RespondAsync($"> <:shy:816399461675696159> i think you forgot to say something," +
                     $" {ctx.Member.Mention}... haven't ya?");
-            }
-            else
-            {
-                await ctx.RespondAsync(args);
-            }
-            await ctx.Message.DeleteAsync();
+            try { await ctx.Message.DeleteAsync(); }
+            catch() {};
         }
     }
 }
