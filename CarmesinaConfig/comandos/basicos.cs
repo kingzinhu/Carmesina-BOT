@@ -4,12 +4,20 @@ using DSharpPlus.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CarmesinaConfig.comandos
 {
     class basicos : BaseCommandModule
     {
+        [Command("test")]
+        public async Task Test(CommandContext ctx)
+        {
+            await ctx.TriggerTypingAsync();
+            await ctx.Client.SendMessageAsync(ctx.Channel, "Any test for a while");
+        }
+
         [Command("ping")]
         [Description("Shows Carmesina's ping")]
         public async Task Ping(CommandContext ctx)
@@ -35,29 +43,20 @@ namespace CarmesinaConfig.comandos
 
         [Command("say")]
         [Description("Repeat the arguments you put after the command")]
-        public async Task Say(CommandContext ctx, DiscordChannel canal, [RemainingText] string texto)
-        {
-            await ctx.TriggerTypingAsync();
-            await canal.SendMessageAsync(args);
-            try { await ctx.Message.DeleteAsync(); }
-            catch() {};
-        }
-        [Command("say")]
         public async Task Say(CommandContext ctx, [RemainingText] string texto)
         {
             await ctx.TriggerTypingAsync();
-            await ctx.RespondAsync(args);
-            try { await ctx.Message.DeleteAsync(); }
-            catch() {};
+            await ctx.RespondAsync(texto);
+            await ctx.Message.DeleteAsync(); 
         }
-        [Command("say")]
-        public async Task Say(CommandContext ctx, DiscordChannel canal = null)
+
+        [Command("type")]
+        [Aliases("typing")]
+        [Description("Do Carmesine starts typing")]
+        public async Task Type(CommandContext ctx, int tempo = 1000)
         {
             await ctx.TriggerTypingAsync();
-            await ctx.RespondAsync($"> <:shy:816399461675696159> i think you forgot to say something," +
-                    $" {ctx.Member.Mention}... haven't ya?");
-            try { await ctx.Message.DeleteAsync(); }
-            catch() {};
+            Thread.Sleep(tempo);
         }
     }
 }
