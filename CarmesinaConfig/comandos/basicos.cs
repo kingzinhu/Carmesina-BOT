@@ -21,11 +21,16 @@ namespace CarmesinaConfig.comandos
         [Command("avatar")]
         [Aliases("usericon")]
         [Description("Show's user's icon")]
-        public async Task Avatar(CommandContext ctx, [RemainingText] DiscordUser user = null)
+        public async Task Avatar(CommandContext ctx, [RemainingText] DiscordUser user)
         {
             await ctx.TriggerTypingAsync();
-            if (user == null) { user = ctx.User; };
             await ctx.RespondAsync(user.AvatarUrl);
+        }
+        [Command("avatar")]
+        public async Task Avatar(CommandContext ctx)
+        {
+            await ctx.TriggerTypingAsync();
+            await ctx.RespondAsync(ctx.User.AvatarUrl);
         }
 
         [Command("say")]
