@@ -17,7 +17,6 @@ namespace CarmesinaConfig
         static void Main(string[] args)
         {
             new Program().RodarBotAsync().GetAwaiter().GetResult(); 
-            
         }
         
 
