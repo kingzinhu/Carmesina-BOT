@@ -22,11 +22,21 @@ namespace CarmesinaConfig.comandos
             return embed;
         }
 
+        static async Task EnviarEEditar(CommandContext ctx, string msg1, string msg2, int tmp = 0)
+        {
+            var newMsg = new DiscordMessageBuilder()
+                .WithContent(msg2);
+            await ctx.Client.SendMessageAsync(ctx.Channel, msg1);
+            var oldMsg = await ctx.Channel.GetMessagesAfterAsync(ctx.Message.Id, 1);
+            Thread.Sleep(tmp);
+            await newMsg.ModifyAsync(oldMsg[0]);
+        }
+
         [Command("test")]
         public async Task Test(CommandContext ctx)
         {
             await ctx.TriggerTypingAsync();
-            await ctx.RespondAsync(EmbedComum("Any test for a while"));
+            await ctx.RespondAsync(EmbedComum("Any test for a while..."));
         }
 
         [Command("ping")]
