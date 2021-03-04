@@ -6,21 +6,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CarmesinaConfig;
 
 namespace CarmesinaConfig.comandos
 {
     class basicos : BaseCommandModule
     {
-        static DiscordEmbed EmbedComum(string texto, string cor = null, string avatarUrl = null)
+        static DiscordEmbed EmbedComum(string texto, string cor = null)
         {
             if (cor == null) { cor = "ffaafd"; }
             var builder = new DiscordEmbedBuilder()
                 .WithDescription(texto)
                 .WithColor(new DiscordColor(cor));
-            if (!(avatarUrl == null))
-            {
-                builder.WithAuthor(" ", null, avatarUrl);
-            }
             var embed = builder.Build();
             return embed;
         }
@@ -49,7 +46,7 @@ namespace CarmesinaConfig.comandos
             if (user == null) { user = ctx.User; }
             var builder = new DiscordEmbedBuilder()
                 .WithDescription($"{user.Mention}'s avatar:")
-                .WithImageUrl($"{user.AvatarUrl}")
+                .WithImageUrl(user.AvatarUrl)
                 .WithColor(new DiscordColor("ffaafd"));
             var embed = builder.Build();
             await ctx.RespondAsync(embed);
@@ -62,8 +59,7 @@ namespace CarmesinaConfig.comandos
             await ctx.TriggerTypingAsync();
             if (texto == null)
             {
-                await ctx.RespondAsync(EmbedComum("Aren't you forgetting anything?", null , 
-                    "https://media.discordapp.net/attachments/816569715483738112/816570567712833556/lamp.png"));
+                await ctx.RespondAsync(EmbedComum("<:lamp:816411488356270141> *Aren't you forgetting anything?*"));
             }
             else
             {
@@ -87,8 +83,15 @@ namespace CarmesinaConfig.comandos
             await ctx.TriggerTypingAsync();
             if (qnts == 0)
             {
-                await ctx.RespondAsync(EmbedComum("You need to enter a quantity!", null,
-                    "https://media.discordapp.net/attachments/816569715483738112/816570567712833556/lamp.png"));
+                await ctx.RespondAsync(EmbedComum("<:lamp:816411488356270141> You need enter a quantity!"));
+            }
+            else
+            {
+                await ctx.TriggerTypingAsync();
+                var messages = await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, qnts);
+                await ctx.Channel.DeleteMessagesAsync(messages);
+                await ctx.Message.DeleteAsync();
+                await ctx.RespondAsync(EmbedComum($"`{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
             }
         }
     }

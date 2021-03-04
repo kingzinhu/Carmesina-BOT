@@ -12,13 +12,12 @@ namespace CarmesinaConfig
 {
     public class Program
     {
-        private DiscordClient _client;
-
+        public DiscordClient _client;
+ 
         static void Main(string[] args)
-        {
+        { 
             new Program().RodarBotAsync().GetAwaiter().GetResult(); 
         }
-        
 
         public async Task RodarBotAsync()
         {
@@ -54,7 +53,6 @@ namespace CarmesinaConfig
 
             await _client.ConnectAsync();
             await Task.Delay(-1);
-
         }
 
         private Task Client_Ready(DiscordClient client, ReadyEventArgs e)
@@ -62,7 +60,11 @@ namespace CarmesinaConfig
             return Task.Run(async () =>
             {
                 DiscordChannel canal_status = await client.GetChannelAsync(814009178393542678);
-                await client.SendMessageAsync(canal_status, "> <:online:816411487794102293> Online, rs");
+                var build = new DiscordEmbedBuilder()
+                    .WithDescription("<:online:816411487794102293> I'm online!")
+                    .WithColor(new DiscordColor("3cdb35"));
+                var embed = build.Build();
+                await client.SendMessageAsync(canal_status, embed);
                 await client.UpdateStatusAsync(new DiscordActivity("c.help", ActivityType.Playing), UserStatus.Online);
             }); 
         }
@@ -80,13 +82,18 @@ namespace CarmesinaConfig
         {
             return Task.Run(async () =>
             {
-               DiscordChannel canal_executedcommands = await _client.GetChannelAsync(816391639681597469);
-               await _client.SendMessageAsync(canal_executedcommands, $"> <:8bitplus:816411488105005105> **Command used**" +
-                   $"\n\n> Command: `{e.Command.Name}`" +
-                   $"\n> Execution author: `{e.Context.Member.Username}`" +
-                   $"\n> Guild: `{e.Context.Guild.Name}`" +
-                   $"\n> Channel: `{e.Context.Channel.Name}`" +
-                   $"\n```{e.Context.Message.Content}```");
+                var build = new DiscordEmbedBuilder()
+                    .WithTitle("<:8bitplus:816411488105005105> **Command used**")
+                    .AddField("Command", $"`{e.Command.Name}`")
+                    .AddField("Author", $"`{e.Context.Member.Username}`")
+                    .AddField("Guild", $"`{e.Context.Guild.Name}`")
+                    .AddField("Channel", $"`{e.Context.Channel.Name}`")
+                    .AddField("Arguments", $"```{(e.Context.Message.Content.Substring(e.Context.Message.Content.Split()[0].Length)).Replace('`', '©')}```")
+                    .WithFooter(e.Context.User.Username + $" ({e.Context.User.Id})", e.Context.User.AvatarUrl)
+                    .WithColor(new DiscordColor("324f79"));
+                DiscordChannel canal_executedcommands = await _client.GetChannelAsync(816391639681597469);
+                var embed = build.Build();
+                await _client.SendMessageAsync(canal_executedcommands, embed);
             });
         }
     }
