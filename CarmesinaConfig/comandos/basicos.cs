@@ -26,7 +26,7 @@ namespace CarmesinaConfig.comandos
         public async Task Test(CommandContext ctx)
         {
             await ctx.TriggerTypingAsync();
-            await ctx.Client.SendMessageAsync(ctx.Channel, "Any test for a while");
+            await ctx.RespondAsync(EmbedComum("Any test for a while"));
         }
 
         [Command("ping")]
@@ -88,7 +88,6 @@ namespace CarmesinaConfig.comandos
             }
             else
             {
-                await ctx.TriggerTypingAsync();
                 var messages = await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, qnts);
                 await ctx.Channel.DeleteMessagesAsync(messages);
                 await ctx.Message.DeleteAsync();
