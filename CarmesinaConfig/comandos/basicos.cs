@@ -94,5 +94,21 @@ namespace CarmesinaConfig.comandos
                 await ctx.RespondAsync(EmbedComum($"<:8bitminus:816411488091766795> `{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
             }
         }
+
+        [Command("github")]
+        [Aliases("git")]
+        [Description("Show's Carmesina's repository GitHub page")]
+        public async Task GitHub(CommandContext ctx)
+        {
+            await ctx.TriggerTypingAsync();
+            var embed = new DiscordEmbedBuilder()
+                .WithThumbnail("https://cdn.discordapp.com/attachments/816569715483738112/817164146453774336/githubcarmesina.png")
+                .WithAuthor("Kingzinhu", "https://twitter.com/kingzinhur", ctx.User.AvatarUrl)
+                .WithTitle("<:GitHub:817168795302363177> Take a look on my GitHub repository ^-^")
+                .WithDescription("https://github.com/kingzinhu/Carmesina-BOT")
+                //.WithUrl("https://github.com/kingzinhu/Carmesina-BOT")
+                .WithColor(new DiscordColor("ffaafd"));
+            await ctx.RespondAsync(embed.Build());
+        }
     }
 }
