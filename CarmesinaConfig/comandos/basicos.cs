@@ -78,6 +78,7 @@ namespace CarmesinaConfig.comandos
 
         [Command("purge")]
         [Aliases("clean", "clear")]
+        [Description("Cleans a quantity of messages in a channel")]
         public async Task Purge(CommandContext ctx, int qnts = 0)
         {
             await ctx.TriggerTypingAsync();
@@ -91,7 +92,7 @@ namespace CarmesinaConfig.comandos
                 var messages = await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, qnts);
                 await ctx.Channel.DeleteMessagesAsync(messages);
                 await ctx.Message.DeleteAsync();
-                await ctx.RespondAsync(EmbedComum($"`{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
+                await ctx.RespondAsync(EmbedComum($"<:8bitminus:816411488091766795> `{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
             }
         }
     }
