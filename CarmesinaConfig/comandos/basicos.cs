@@ -8,20 +8,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using CarmesinaConfig;
 using DSharpPlus.Interactivity.Extensions;
+using CarmesinaConfig.funcoes;
 
 namespace CarmesinaConfig.comandos
 {
     class basicos : BaseCommandModule
     {
-        static DiscordEmbed EmbedComum(string texto, string cor = null)
-        {
-            if (cor == null) { cor = "ffaafd"; }
-            var builder = new DiscordEmbedBuilder()
-                .WithDescription(texto)
-                .WithColor(new DiscordColor(cor));
-            var embed = builder.Build();
-            return embed;
-        }
 
         [Command("test")]
         [Description("Test some function")]
@@ -35,7 +27,7 @@ namespace CarmesinaConfig.comandos
         public async Task Ping(CommandContext ctx)
         {
             await ctx.TriggerTypingAsync();
-            await ctx.RespondAsync(EmbedComum($":ping_pong: Pong! The current latency is {ctx.Client.Ping}ms"));
+            await ctx.RespondAsync(simples.EmbedComum($":ping_pong: Pong! The current latency is {ctx.Client.Ping}ms"));
         }
 
         [Command("avatar")]
@@ -60,7 +52,7 @@ namespace CarmesinaConfig.comandos
             await ctx.TriggerTypingAsync();
             if (texto == null)
             {
-                await ctx.RespondAsync(EmbedComum("<:lamp:816411488356270141> *Aren't you forgetting anything?*"));
+                await ctx.RespondAsync(simples.EmbedComum("<:lamp:816411488356270141> *Aren't you forgetting anything?*"));
             }
             else
             {
@@ -85,14 +77,14 @@ namespace CarmesinaConfig.comandos
             await ctx.TriggerTypingAsync();
             if (qnts == 0)
             {
-                await ctx.RespondAsync(EmbedComum("<:lamp:816411488356270141> You need enter a quantity!"));
+                await ctx.RespondAsync(simples.EmbedComum("<:lamp:816411488356270141> You need enter a quantity!"));
             }
             else
             {
                 var messages = await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, qnts);
                 await ctx.Channel.DeleteMessagesAsync(messages);
                 await ctx.Message.DeleteAsync();
-                await ctx.RespondAsync(EmbedComum($"<:8bitminus:816411488091766795> `{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
+                await ctx.RespondAsync(simples.EmbedComum($"<:8bitminus:816411488091766795> `{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
             }
         }
 
