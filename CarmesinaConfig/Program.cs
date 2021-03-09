@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using CarmesinaConfig.comandos;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Extensions;
+using DSharpPlus.Interactivity.Enums;
 
 namespace CarmesinaConfig
 {
@@ -47,6 +49,14 @@ namespace CarmesinaConfig
                 IgnoreExtraArguments = true,
 
             });
+
+            InteractivityExtension icf = _client.UseInteractivity(new InteractivityConfiguration()
+            {
+                PollBehaviour = PollBehaviour.KeepEmojis,
+                Timeout = TimeSpan.FromSeconds(10)
+            });
+
+
             cnt.CommandExecuted += Cnt_CommandExecuted;
 
             cnt.RegisterCommands<basicos>();
