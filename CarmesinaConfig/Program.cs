@@ -60,6 +60,7 @@ namespace CarmesinaConfig
             cnt.CommandExecuted += Cnt_CommandExecuted;
 
             cnt.RegisterCommands<basicos>();
+            cnt.RegisterCommands<Exclusivos>();
 
             await _client.ConnectAsync();
             await Task.Delay(-1);

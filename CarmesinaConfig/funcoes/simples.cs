@@ -13,7 +13,7 @@ namespace CarmesinaConfig.funcoes
 {
     class simples
     {
-        static DiscordEmbed EmbedComum(string texto, string cor = null)
+        public static DiscordEmbed EmbedComum(string texto, string cor = null)
         {
             if (cor == null) { cor = "ffaafd"; }
             var builder = new DiscordEmbedBuilder()
@@ -21,6 +21,15 @@ namespace CarmesinaConfig.funcoes
                 .WithColor(new DiscordColor(cor));
             var embed = builder.Build();
             return embed;
+        }
+
+        public static bool ContemUlong(ulong item, ulong[] local)
+        {
+            foreach(ulong coisa in local)
+            {
+                if (coisa == item) return true;
+            }
+            return false;
         }
     }
 }
