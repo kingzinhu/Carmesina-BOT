@@ -70,5 +70,12 @@ namespace CarmesinaConfig.comandos
             Thread.Sleep(3000);
             await ctx.RespondAsync($"{escolhido.Mention}!!!");
         }
+
+        [Command("syllabes")]
+        [Description("Split the word in syllabes")]
+        public async Task syllabes(CommandContext ctx, string ins)
+        {
+            
+        }
     }
 }
