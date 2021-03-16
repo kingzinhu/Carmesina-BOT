@@ -31,5 +31,11 @@ namespace CarmesinaConfig.funcoes
             }
             return false;
         }
+
+        public static string Capitalize(string texto)
+        {
+            string l = texto.Substring(0, 1).ToUpper();
+            return l + texto.Substring(1);
+        }
     }
 }

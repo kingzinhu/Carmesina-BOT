@@ -72,10 +72,51 @@ namespace CarmesinaConfig.comandos
         }
 
         [Command("syllabes")]
+        [Aliases("split", "word")]
         [Description("Split the word in syllabes")]
         public async Task syllabes(CommandContext ctx, string ins)
         {
-            
+            string vogais = "";
+            string consoantes = "";
+            int silabas = 1;
+            string contraria = "";
+            string japostas = "";
+
+            ins = ins.Split()[0];
+            DivisionSilabica_CSharp.Divisor divisor = new DivisionSilabica_CSharp.Divisor(ins);
+            divisor.getString();
+
+            foreach (char l in ins)
+            {
+                if ("aeiou".Contains(l.ToString().ToLower()) && !japostas.Contains(l.ToString().ToLower()))
+                {
+                    japostas += l.ToString();
+                    vogais += l.ToString() + " ";
+                }
+
+                if ("bcdfghjklmnpqrstvwxyz".Contains(l.ToString().ToLower()) && !japostas.Contains(l.ToString().ToLower()))
+                {
+                    japostas += l.ToString();
+                    consoantes += l.ToString() + " ";
+                }
+            }
+
+            string separado = divisor.silabear();
+
+            foreach (char l in separado) if (l == '-')  silabas += 1;
+
+            for (int i = ins.Length - 1; i >= 0; i--) contraria += ins[i];
+
+            var embed = new DiscordEmbedBuilder()
+                .WithTitle($"📚 {simples.Capitalize(ins)}")
+                .AddField($"✂️ Splited ({silabas})", separado)
+                .AddField("🅰 Vowels", vogais)
+                .AddField("🅱 Consonants", consoantes)
+                .AddField("🔁 Reverse", contraria)
+                .WithColor(new DiscordColor("ffaafd"))
+                .WithUrl($"https://www.dicio.com.br/" + ins + "/")
+                .WithFooter($"Letters: {ins.Length}");
+            await ctx.RespondAsync(embed.Build());
         }
     }
 }
