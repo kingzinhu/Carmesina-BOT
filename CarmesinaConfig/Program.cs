@@ -76,7 +76,7 @@ namespace CarmesinaConfig
                     .WithDescription("<:online:816411487794102293> I'm online!")
                     .WithColor(new DiscordColor("3cdb35"));
                 var embed = build.Build();
-                await client.SendMessageAsync(canal_status, embed);
+                await client.SendMessageAsync(canal_status, null, false, embed);
                 await client.UpdateStatusAsync(new DiscordActivity("c.help", ActivityType.Playing), UserStatus.Online);
             }); 
         }
@@ -105,7 +105,7 @@ namespace CarmesinaConfig
                     .WithColor(new DiscordColor("324f79"));
                 DiscordChannel canal_executedcommands = await _client.GetChannelAsync(816391639681597469);
                 var embed = build.Build();
-                await _client.SendMessageAsync(canal_executedcommands, embed);
+                await _client.SendMessageAsync(canal_executedcommands, null, false, embed);
             });
         }
     }
