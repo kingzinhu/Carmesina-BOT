@@ -27,7 +27,7 @@ namespace CarmesinaConfig.comandos
         public async Task Ping(CommandContext ctx)
         {
             await ctx.TriggerTypingAsync();
-            await ctx.RespondAsync(null, false, simples.EmbedComum($":ping_pong: Pong! The current latency is {ctx.Client.Ping}ms"));
+            await ctx.RespondAsync(simples.EmbedComum($":ping_pong: Pong! The current latency is {ctx.Client.Ping}ms"));
         }
 
         [Command("avatar")]
@@ -42,7 +42,7 @@ namespace CarmesinaConfig.comandos
                 .WithImageUrl(user.AvatarUrl)
                 .WithColor(new DiscordColor("ffaafd"));
             var embed = builder.Build();
-            await ctx.RespondAsync(null, false, embed);
+            await ctx.RespondAsync(embed);
         }
 
         [Command("say")]
@@ -52,7 +52,7 @@ namespace CarmesinaConfig.comandos
             await ctx.TriggerTypingAsync();
             if (texto == null)
             {
-                await ctx.RespondAsync(null, false, simples.EmbedComum("<:lamp:816411488356270141> *Aren't you forgetting anything?*"));
+                await ctx.RespondAsync(simples.EmbedComum("<:lamp:816411488356270141> *Aren't you forgetting anything?*"));
             }
             else
             {
@@ -77,14 +77,14 @@ namespace CarmesinaConfig.comandos
             await ctx.TriggerTypingAsync();
             if (qnts == 0)
             {
-                await ctx.RespondAsync(null, false, simples.EmbedComum("<:lamp:816411488356270141> You need enter a quantity!"));
+                await ctx.RespondAsync(simples.EmbedComum("<:lamp:816411488356270141> You need enter a quantity!"));
             }
             else
             {
                 var messages = await ctx.Channel.GetMessagesBeforeAsync(ctx.Message.Id, qnts);
                 await ctx.Channel.DeleteMessagesAsync(messages);
                 await ctx.Message.DeleteAsync();
-                await ctx.RespondAsync(null, false, simples.EmbedComum($"<:8bitminus:816411488091766795> `{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
+                await ctx.RespondAsync(simples.EmbedComum($"<:8bitminus:816411488091766795> `{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
                 //await ctx.
             }
         }
@@ -101,7 +101,7 @@ namespace CarmesinaConfig.comandos
                 .WithTitle("<:GitHub:817168795302363177> Take a look on my GitHub repository ^-^")
                 .WithDescription("https://github.com/kingzinhu/Carmesina-BOT")
                 .WithColor(new DiscordColor("ffaafd"));
-            await ctx.RespondAsync(null, false, embed.Build());
+            await ctx.RespondAsync(embed.Build());
         }
     }
 }

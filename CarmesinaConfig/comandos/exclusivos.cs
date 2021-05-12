@@ -28,28 +28,28 @@ namespace CarmesinaConfig.comandos
             {
                 await ctx.TriggerTypingAsync();
                 await ctx.Message.DeleteAsync();
-                var pergunta = await ctx.RespondAsync(null, false, simples.EmbedComum("<:lamp:816411488356270141> **What's the survey's theme?**"));
+                var pergunta = await ctx.RespondAsync(simples.EmbedComum("<:lamp:816411488356270141> **What's the survey's theme?**"));
                 var resposta = await ctx.Message.GetNextMessageAsync(TimeSpan.FromSeconds(15));
                 if (!resposta.TimedOut)
                 {
                     await pergunta.DeleteAsync();
                     await resposta.Result.DeleteAsync();
                     await ctx.TriggerTypingAsync();
-                    var pergunta2 = await ctx.RespondAsync(null, false, simples.EmbedComum("<:lamp:816411488356270141> **How long (in seconds) is this survey timeout?**"));
+                    var pergunta2 = await ctx.RespondAsync(simples.EmbedComum("<:lamp:816411488356270141> **How long (in seconds) is this survey timeout?**"));
                     aguardar_resposta:
                     var resposta2 = await ctx.Message.GetNextMessageAsync(TimeSpan.FromSeconds(15));
 
                     if (!resposta2.TimedOut)
                     {
                         try { int.Parse(resposta2.Result.Content); }
-                        catch { await ctx.RespondAsync(null, false, simples.EmbedComum("<:Mcross:816411488872038420> **That's not a value. Try again**", "ff0000")); goto aguardar_resposta; }
+                        catch { await ctx.RespondAsync(simples.EmbedComum("<:Mcross:816411488872038420> **That's not a value. Try again**", "ff0000")); goto aguardar_resposta; }
                         await resposta2.Result.DeleteAsync();
                         await pergunta2.DeleteAsync();
                         var enquete = new DiscordEmbedBuilder()
                             .WithAuthor(ctx.Member.Username, null, ctx.Member.AvatarUrl)
                             .WithDescription(resposta.Result.Content)
                             .WithColor(new DiscordColor("ffaafd"));
-                        var msg = await ctx.RespondAsync(null, false, enquete.Build());
+                        var msg = await ctx.RespondAsync(enquete.Build());
                         if (qnt > 11) qnt = 11;
                         if (qnt < 0) qnt = 0;
                         if (qnt == 0)
@@ -100,13 +100,13 @@ namespace CarmesinaConfig.comandos
                             .WithTitle($"\"{resposta.Result.Content}\"")
                             .WithUrl(msg.JumpLink)
                             .WithDescription("This survey has been finished!");
-                        await ctx.RespondAsync(ctx.User.Mention, false, avisar.Build());
+                        await ctx.RespondAsync(ctx.User.Mention, avisar.Build());
                     }
-                    else { await ctx.RespondAsync(null, false, simples.EmbedComum("<:offline:816411488385761283> **Time Out**", "ff0000")); }
+                    else { await ctx.RespondAsync(simples.EmbedComum("<:offline:816411488385761283> **Time Out**", "ff0000")); }
                 }
-                else { await ctx.RespondAsync(null, false, simples.EmbedComum("<:offline:816411488385761283> **Time Out**", "ff0000")); }
+                else { await ctx.RespondAsync(simples.EmbedComum("<:offline:816411488385761283> **Time Out**", "ff0000")); }
             }
-            else { await ctx.RespondAsync(null, false, simples.EmbedComum("<:Mcross:816411488872038420> **Only Carmesina's owners can use this command**", "ff0000")); }
+            else { await ctx.RespondAsync(simples.EmbedComum("<:Mcross:816411488872038420> **Only Carmesina's owners can use this command**", "ff0000")); }
         }
     }
 }

@@ -29,7 +29,7 @@ namespace CarmesinaConfig.comandos
             Random random = new Random();
             int val = random.Next(qnt - 1);
             var sorteado = msgs[val].Author;
-            await ctx.RespondAsync(null, false, simples.EmbedComum($"**Hmm... I can see {sorteado.Mention} is the gayest of the chat right now.**"));
+            await ctx.RespondAsync(simples.EmbedComum($"**Hmm... I can see {sorteado.Mention} is the gayest of the chat right now.**"));
         }
 
         [Command("pp")]
@@ -47,7 +47,7 @@ namespace CarmesinaConfig.comandos
                     .WithTitle($"**{user.Username}'s pp size:**")
                     .WithDescription($"8{tamanho}D")
                     .WithFooter($"{val*2} cm");
-            await ctx.RespondAsync(null, false, embed.Build());
+            await ctx.RespondAsync(embed.Build());
         }
 
         [Command("dice")]
@@ -56,7 +56,7 @@ namespace CarmesinaConfig.comandos
         public async Task dice(CommandContext ctx, int faces = 6)
         {
             int face = new Random().Next(faces + 1);
-            await ctx.RespondAsync(null, false, simples.EmbedComum($"You rolled {faces} and got: `{face}`"));
+            await ctx.RespondAsync(simples.EmbedComum($"You rolled {faces} and got: `{face}`"));
         }
 
         [Command("draw")]
@@ -116,7 +116,7 @@ namespace CarmesinaConfig.comandos
                 .WithColor(new DiscordColor("ffaafd"))
                 .WithUrl($"https://www.dicio.com.br/" + ins + "/")
                 .WithFooter($"Letters: {ins.Length}");
-            await ctx.RespondAsync(null, false, embed.Build());
+            await ctx.RespondAsync(embed.Build());
         }
     }
 }
