@@ -62,6 +62,7 @@ namespace CarmesinaConfig
             cnt.RegisterCommands<basicos>();
             cnt.RegisterCommands<Exclusivos>();
             cnt.RegisterCommands<diversao>();
+            cnt.RegisterCommands<luta>();
 
             await _client.ConnectAsync();
             await Task.Delay(-1);
@@ -94,13 +95,15 @@ namespace CarmesinaConfig
         {
             return Task.Run(async () =>
             {
+                string args = e.Context.Message.Content.Substring(e.Context.Message.Content.Split()[0].Length);
+                if (args == "") args = " ";
                 var build = new DiscordEmbedBuilder()
                     .WithTitle("<:8bitplus:816411488105005105> **Command used**")
                     .AddField("Command", $"`{e.Command.Name}`")
                     .AddField("Author", $"`{e.Context.Member.Username}`")
                     .AddField("Guild", $"`{e.Context.Guild.Name}`")
                     .AddField("Channel", $"`{e.Context.Channel.Name}`")
-                    .AddField("Arguments", $"```{(e.Context.Message.Content.Substring(e.Context.Message.Content.Split()[0].Length)).Replace('`', '©')}```")
+                    .AddField("Arguments", $"```{args.Replace('`', '©')}```")
                     .WithFooter(e.Context.User.Username + $" ({e.Context.User.Id})", e.Context.User.AvatarUrl)
                     .WithColor(new DiscordColor("324f79"));
                 DiscordChannel canal_executedcommands = await _client.GetChannelAsync(816391639681597469);

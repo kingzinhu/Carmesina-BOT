@@ -20,6 +20,25 @@ namespace CarmesinaConfig.comandos
         public async Task Test(CommandContext ctx)
         {
             await ctx.TriggerTypingAsync();
+
+            DiscordMessage mensagem = await ctx.RespondAsync("cu");
+
+            DiscordEmoji emoji = DiscordEmoji.FromName(ctx.Client, ":thumbsup:");
+
+            opars:
+
+            await mensagem.CreateReactionAsync(emoji);
+
+            var reacao = await mensagem.WaitForReactionAsync(ctx.Member, TimeSpan.FromSeconds(8f));
+
+            if (!reacao.TimedOut){
+                if (reacao.Result.Emoji == emoji)
+                {
+                    await ctx.RespondAsync("oi");
+                    await mensagem.DeleteAllReactionsAsync();
+                    goto opars;
+                } 
+            }
         }
 
         [Command("ping")]
@@ -85,7 +104,6 @@ namespace CarmesinaConfig.comandos
                 await ctx.Channel.DeleteMessagesAsync(messages);
                 await ctx.Message.DeleteAsync();
                 await ctx.RespondAsync(simples.EmbedComum($"<:8bitminus:816411488091766795> `{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
-                //await ctx.
             }
         }
 

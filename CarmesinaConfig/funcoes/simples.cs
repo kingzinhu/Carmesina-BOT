@@ -17,8 +17,8 @@ namespace CarmesinaConfig.funcoes
         {
             if (cor == null) { cor = "ffaafd"; }
             var builder = new DiscordEmbedBuilder()
-                .WithDescription(texto)
-                .WithColor(new DiscordColor(cor));
+                .WithDescription(texto).WithColor(new DiscordColor(cor));
+                
             var embed = builder.Build();
             return embed;
         }
