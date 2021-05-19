@@ -37,7 +37,7 @@ namespace CarmesinaConfig.comandos
 
             if (nome == null) nome = "unknown";
 
-            Inimigo inimigo = new Inimigo(nome, 7);
+            Inimigo inimigo = new Inimigo(nome, ale.Next(1, 15));
 
             DiscordEmbedBuilder inimigoEmbed = new DiscordEmbedBuilder()
                 .AddField(":small_orange_diamond: Protection:", $":shield: | **{inimigo.GetProtecao()}**", true)
