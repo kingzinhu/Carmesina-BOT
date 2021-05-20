@@ -10,6 +10,7 @@
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-nightly-00806" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-nightly-00806" />
     <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-nightly-00806" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
     <PackageReference Include="Tesseract" Version="4.1.1" />
     <PackageReference Include="Tesseract-OCR" Version="1.0.4" />
   </ItemGroup>

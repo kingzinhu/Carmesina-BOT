@@ -37,5 +37,20 @@ namespace CarmesinaConfig.funcoes
             string l = texto.Substring(0, 1).ToUpper();
             return l + texto.Substring(1);
         }
+
+        public static string Join(string texto, string item)
+        {
+            string resultado = "";
+            int pos = 0;
+
+            foreach (char letra in texto)
+            {
+                if (letra != ' ') resultado += letra;
+                else if ((pos > 0) && (resultado[ pos - 1].ToString() != item)) resultado += item;
+                pos++;
+            }
+
+            return resultado;
+        }
     }
 }

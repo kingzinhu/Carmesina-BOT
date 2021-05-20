@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using CarmesinaConfig;
 using DSharpPlus.Interactivity.Extensions;
 using CarmesinaConfig.funcoes;
+using System.Net;
+using HtmlAgilityPack;
 
 namespace CarmesinaConfig.comandos
 {
@@ -17,9 +19,31 @@ namespace CarmesinaConfig.comandos
 
         [Command("test")]
         [Description("Test some function")]
-        public async Task Test(CommandContext ctx)
+        public async Task Test(CommandContext ctx, [RemainingText] string comida = null)
         {
             await ctx.TriggerTypingAsync();
+
+            if (comida == null) await ctx.RespondAsync(simples.EmbedComum("Você não digitou nada!"));
+            else
+            {
+                comida = simples.Join(comida, "+");
+
+                var wc = new WebClient();
+
+                string pagina = wc.DownloadString($"https://www.tudogostoso.com.br/busca?q=bolo+de+fubá");
+
+                var htmlDocumento = new HtmlDocument();
+                htmlDocumento.LoadHtml(pagina);
+
+                await ctx.RespondAsync(htmlDocumento.Text.ToString());
+
+                //HtmlNodeCollection divContainer = htmlDocumento.;
+
+                /*foreach (var item in divContainer.Elements())
+                {
+                    await ctx.RespondAsync();
+                }*/
+            }
         }
 
         [Command("ping")]
