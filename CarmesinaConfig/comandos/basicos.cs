@@ -35,7 +35,7 @@ namespace CarmesinaConfig.comandos
                 var htmlDocumento = new HtmlDocument();
                 htmlDocumento.LoadHtml(pagina);
 
-                await ctx.RespondAsync(htmlDocumento.Text.ToString());
+                //await ctx.RespondAsync();
 
                 //HtmlNodeCollection divContainer = htmlDocumento.;
 
