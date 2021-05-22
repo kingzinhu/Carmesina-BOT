@@ -299,7 +299,10 @@ namespace CarmesinaConfig.comandos
                 {
                     DiscordEmbedBuilder erro = new DiscordEmbedBuilder()
                         .WithAuthor("Erro!!!", null, "https://media.discordapp.net/attachments/816569715483738112/845787591751106600/8bitcross.png")
-                        .AddField("Algo deu errado!", "\nProvavelmente isso aconteceu por uma incompetência do King, ou por incompetência sua em ter escrito incorretamente.")
+                        .AddField("Isso pode ter acontecido por 4 motivos:", "1 - Incompetência do King_ " +
+                        "\n\n 2 - Você escreveu algo errado " +
+                        "\n\n 3 - Essa receita não deve existir no site em que busco informações" +
+                        "\n\n4 - Não faço ideia")
                         .WithColor(new DiscordColor("ff0000"));
 
                     await ctx.RespondAsync(erro.Build());
