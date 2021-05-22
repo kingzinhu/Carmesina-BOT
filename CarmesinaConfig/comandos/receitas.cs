@@ -70,7 +70,7 @@ namespace CarmesinaConfig.comandos
                             string res = "";
                             foreach (HtmlNode n in node.ChildNodes)
                             {
-                                res += n.InnerText + "\n";
+                                res += "• " + simples.FormatarAcentosHtml(n.InnerText) + "\n\n";
                                 intervalo = 1;
                             }
                             ingredientes.Add(res);
@@ -84,7 +84,7 @@ namespace CarmesinaConfig.comandos
                     string res = "";
                     foreach (HtmlNode n in row.ChildNodes[3].ChildNodes)
                     {
-                        res += n.InnerText + "\n";
+                        res += "• " + simples.FormatarAcentosHtml(n.InnerText) + "\n\n";
                     }
                     ingredientes.Add(res);
                 }
@@ -106,10 +106,12 @@ namespace CarmesinaConfig.comandos
                         }
                         else if (intervalo == 2)
                         {
+                            int c = 0;
                             string res = "";
                             foreach (HtmlNode n in node.ChildNodes)
                             {
-                                res += n.InnerText + "\n";
+                                c++;
+                                res += c + " - " + simples.FormatarAcentosHtml(n.InnerText) + "\n\n";
                                 intervalo = 1;
                             }
                             preparo.Add(res);
@@ -120,10 +122,12 @@ namespace CarmesinaConfig.comandos
                 {
                     preparoTop.Add("");
 
+                    int c = 0;
                     string res = "";
                     foreach (HtmlNode n in row2.ChildNodes[1].ChildNodes)
                     {
-                        res += n.InnerText + "\n";
+                        c++;
+                        res += c + " - " + n.InnerText + "\n\n";
                     }
                     preparo.Add(res);
                 }
@@ -135,6 +139,8 @@ namespace CarmesinaConfig.comandos
                     .WithDescription(":bread: - Ingredientes \n\n :pencil: - Modo de preparo")
                     .WithFooter("Feito por " + autor)
                     .WithColor(new DiscordColor("ffaafd"));
+
+                int cenario = 0;
 
                 var mensagem = await ctx.RespondAsync(embedP.Build());
 
@@ -149,16 +155,24 @@ namespace CarmesinaConfig.comandos
                 int indiceIngredientes = 0;
                 int indicePreparo = 0;
 
+                DiscordEmbedBuilder embedIn = new DiscordEmbedBuilder();
+                DiscordEmbedBuilder embedPre = new DiscordEmbedBuilder();
+
+                atualizar:
+
+                await mensagem.DeleteAllReactionsAsync();
+
                 if (ingredientesTop.Count > 1)
                 {
-                    DiscordEmbedBuilder embedIn = new DiscordEmbedBuilder()
+                    embedIn
                         .WithAuthor(ingredientesTop[indiceIngredientes])
                         .WithDescription(ingredientes[indiceIngredientes])
+                        .WithFooter($"{indiceIngredientes + 1} / {ingredientesTop.Count - 1}")
                         .WithColor(rosinha);
                 }
                 else
                 {
-                    DiscordEmbedBuilder embedIn = new DiscordEmbedBuilder()
+                    embedIn
                         .WithAuthor("Ingredientes")
                         .WithDescription(ingredientes[0])
                         .WithColor(rosinha);
@@ -166,21 +180,105 @@ namespace CarmesinaConfig.comandos
 
                 if (preparoTop.Count > 1)
                 {
-                    DiscordEmbedBuilder embedPre = new DiscordEmbedBuilder()
+                    embedPre
                         .WithAuthor(preparoTop[indicePreparo])
                         .WithDescription(preparo[indicePreparo])
+                        .WithFooter($"{indicePreparo + 1} / {preparoTop.Count - 1}")
                         .WithColor(rosinha);
                 }
                 else
                 {
-                    DiscordEmbedBuilder embedPre = new DiscordEmbedBuilder()
+                    embedPre
                         .WithAuthor("Modo de preparo")
                         .WithDescription(preparo[0])
                         .WithColor(rosinha);
                 }
 
-                await mensagem.CreateReactionAsync(pao);
-                await mensagem.CreateReactionAsync(pencil);
+                if (cenario == 0)
+                {
+                    await mensagem.ModifyAsync(embedP.Build());
+
+                    await mensagem.CreateReactionAsync(pao);
+                    await mensagem.CreateReactionAsync(pencil);
+
+                    var reacao = await mensagem.WaitForReactionAsync(ctx.Member, TimeSpan.FromSeconds(30f));
+
+                    if (!reacao.TimedOut)
+                    {
+
+                        if (reacao.Result.Emoji == pao)
+                        {
+                            await mensagem.ModifyAsync(embedIn.Build());
+                            cenario = 1;
+                            goto atualizar;
+                        }
+
+                        if (reacao.Result.Emoji == pencil)
+                        {
+                            await mensagem.ModifyAsync(embedPre.Build());
+                            cenario = 2;
+                            goto atualizar;
+                        }
+                    }
+                }
+
+                if (cenario == 1)
+                {
+                    await mensagem.ModifyAsync(embedIn.Build());
+
+                    await mensagem.CreateReactionAsync(casa);
+                    await mensagem.CreateReactionAsync(esquerda);
+                    await mensagem.CreateReactionAsync(direita);
+
+                    var reacao = await mensagem.WaitForReactionAsync(ctx.Member);
+
+                    if (!reacao.TimedOut)
+                    {
+                        if (reacao.Result.Emoji == direita)
+                        {
+                            if (!(indiceIngredientes >= ingredientesTop.Count - 2)) indiceIngredientes++;
+                            goto atualizar;
+                        }
+
+                        if (reacao.Result.Emoji == esquerda)
+                        {
+                            if (!(indiceIngredientes <= 0)) indiceIngredientes--;
+                            goto atualizar;
+                        }
+
+                        if (reacao.Result.Emoji == casa) cenario = 0;
+                        goto atualizar;
+                    }
+                }
+
+                if (cenario == 2)
+                {
+                    await mensagem.ModifyAsync(embedPre.Build());
+
+                    await mensagem.CreateReactionAsync(casa);
+                    await mensagem.CreateReactionAsync(esquerda);
+                    await mensagem.CreateReactionAsync(direita); 
+
+                    var reacao = await mensagem.WaitForReactionAsync(ctx.Member);
+
+                    if (!reacao.TimedOut)
+                    {
+                        if (reacao.Result.Emoji == direita)
+                        {
+                            if (!(indicePreparo >= preparoTop.Count - 2)) indicePreparo++;
+                            goto atualizar;
+                        }
+
+                        if (reacao.Result.Emoji == esquerda)
+                        {
+                            if (!(indicePreparo <= 0)) indicePreparo--;
+                            goto atualizar;
+                        }
+
+                        if (reacao.Result.Emoji == casa) cenario = 0;
+                        goto atualizar;
+                    }
+                }
 
 
             }
