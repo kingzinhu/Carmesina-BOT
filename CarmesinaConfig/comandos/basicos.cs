@@ -28,21 +28,7 @@ namespace CarmesinaConfig.comandos
             {
                 comida = simples.Join(comida, "+");
 
-                var wc = new WebClient();
-
-                string pagina = wc.DownloadString($"https://www.tudogostoso.com.br/busca?q=bolo+de+fubá");
-
-                var htmlDocumento = new HtmlDocument();
-                htmlDocumento.LoadHtml(pagina);
-
-                //await ctx.RespondAsync();
-
-                //HtmlNodeCollection divContainer = htmlDocumento.;
-
-                /*foreach (var item in divContainer.Elements())
-                {
-                    await ctx.RespondAsync();
-                }*/
+               
             }
         }
 
