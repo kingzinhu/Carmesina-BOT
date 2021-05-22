@@ -136,11 +136,51 @@ namespace CarmesinaConfig.comandos
                     .WithFooter("Feito por " + autor)
                     .WithColor(new DiscordColor("ffaafd"));
 
-                await ctx.RespondAsync(embedP.Build());
+                var mensagem = await ctx.RespondAsync(embedP.Build());
+
+                DiscordEmoji direita = DiscordEmoji.FromName(ctx.Client, ":arrow_forward:");
+                DiscordEmoji esquerda = DiscordEmoji.FromName(ctx.Client, ":arrow_backward:");
+                DiscordEmoji pao = DiscordEmoji.FromName(ctx.Client, ":bread:");
+                DiscordEmoji pencil = DiscordEmoji.FromName(ctx.Client, ":pencil:");
+
+                DiscordColor rosinha = new DiscordColor("ffaafd");
+
+                int indiceIngredientes = 0;
+                int indicePreparo = 0;
+
+                if (ingredientesTop.Count > 1)
+                {
+                    DiscordEmbedBuilder embedIn = new DiscordEmbedBuilder()
+                        .WithAuthor(ingredientesTop[indiceIngredientes])
+                        .WithDescription(ingredientes[indiceIngredientes])
+                        .WithColor(rosinha);
+                }
+                else
+                {
+                    DiscordEmbedBuilder embedIn = new DiscordEmbedBuilder()
+                        .WithAuthor("Ingredientes")
+                        .WithDescription(ingredientes[0])
+                        .WithColor(rosinha);
+                }
+
+                if (preparoTop.Count > 1)
+                {
+                    DiscordEmbedBuilder embedPre = new DiscordEmbedBuilder()
+                        .WithAuthor(preparoTop[indicePreparo])
+                        .WithDescription(preparo[indicePreparo])
+                        .WithColor(rosinha);
+                }
+                else
+                {
+                    DiscordEmbedBuilder embedPre = new DiscordEmbedBuilder()
+                        .WithAuthor("Modo de preparo")
+                        .WithDescription(preparo[0])
+                        .WithColor(rosinha);
+                }
             }
             catch
             {
-                await ctx.RespondAsync("Alguma coisa deu errad :(");
+                await ctx.RespondAsync("Alguma coisa deu errado :(");
             }
         }
     }
