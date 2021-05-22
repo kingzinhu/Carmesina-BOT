@@ -142,6 +142,7 @@ namespace CarmesinaConfig.comandos
                 DiscordEmoji esquerda = DiscordEmoji.FromName(ctx.Client, ":arrow_backward:");
                 DiscordEmoji pao = DiscordEmoji.FromName(ctx.Client, ":bread:");
                 DiscordEmoji pencil = DiscordEmoji.FromName(ctx.Client, ":pencil:");
+                DiscordEmoji casa = DiscordEmoji.FromName(ctx.Client, ":house:");
 
                 DiscordColor rosinha = new DiscordColor("ffaafd");
 
@@ -177,6 +178,11 @@ namespace CarmesinaConfig.comandos
                         .WithDescription(preparo[0])
                         .WithColor(rosinha);
                 }
+
+                await mensagem.CreateReactionAsync(pao);
+                await mensagem.CreateReactionAsync(pencil);
+
+
             }
             catch
             {
