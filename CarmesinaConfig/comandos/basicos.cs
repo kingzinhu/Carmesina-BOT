@@ -22,14 +22,6 @@ namespace CarmesinaConfig.comandos
         public async Task Test(CommandContext ctx, [RemainingText] string comida = null)
         {
             await ctx.TriggerTypingAsync();
-
-            if (comida == null) await ctx.RespondAsync(simples.EmbedComum("Você não digitou nada!"));
-            else
-            {
-                comida = simples.Join(comida, "+");
-
-               
-            }
         }
 
         [Command("ping")]
@@ -107,7 +99,7 @@ namespace CarmesinaConfig.comandos
             await ctx.TriggerTypingAsync();
             var embed = new DiscordEmbedBuilder()
                 .WithThumbnail("https://cdn.discordapp.com/attachments/816569715483738112/817164146453774336/githubcarmesina.png")
-                .WithAuthor("Kingzinhu", "https://twitter.com/kingzinhur", ctx.User.AvatarUrl)
+                .WithAuthor("Kingzinhu", "https://twitter.com/kingzinhur", "https://cdn.discordapp.com/attachments/816569715483738112/845712042682089532/2b104ee7173622c6bd5a8652c45f8bc6.png")
                 .WithTitle("<:GitHub:817168795302363177> Take a look on my GitHub repository ^-^")
                 .WithDescription("https://github.com/kingzinhu/Carmesina-BOT")
                 .WithColor(new DiscordColor("ffaafd"));
