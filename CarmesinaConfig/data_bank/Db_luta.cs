@@ -68,7 +68,7 @@ namespace CarmesinaConfig.data_bank
         {
             if (!TemId(id))
             {
-                ExecutarComando($"INSERT INTO users_data (USER_ID, COINS, USER_LEVEL, USER_XP) VALUES ('{id}', '0', '0', '0')");
+                ExecutarComando($"INSERT INTO users_data (USER_ID, COINS, USER_LEVEL, USER_XP) VALUES ('{id}', '0', '1', '0')");
             }
         }
     }

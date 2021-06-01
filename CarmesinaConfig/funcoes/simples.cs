@@ -13,6 +13,15 @@ namespace CarmesinaConfig.funcoes
 {
     class simples
     {
+        public static int Count(string texto, string valor)
+        {
+            int c = 0;
+            foreach (char l in texto)
+            {
+                if (l.ToString() == valor) c++;
+            }
+            return c;
+        }
         public static DiscordEmbed EmbedComum(string texto, string cor = null)
         {
             if (cor == null) { cor = "ffaafd"; }
