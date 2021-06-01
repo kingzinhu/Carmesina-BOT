@@ -2,6 +2,8 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
+using System.Data;
+using System.Data.SQLite;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -11,6 +13,7 @@ using DSharpPlus.Interactivity.Extensions;
 using CarmesinaConfig.funcoes;
 using System.Net;
 using HtmlAgilityPack;
+using CarmesinaConfig.data_bank;
 
 namespace CarmesinaConfig.comandos
 {
@@ -19,7 +22,7 @@ namespace CarmesinaConfig.comandos
 
         [Command("test")]
         [Description("Test some function")]
-        public async Task Test(CommandContext ctx, [RemainingText] string comida = null)
+        public async Task Test(CommandContext ctx, [RemainingText] string id = "")
         {
             await ctx.TriggerTypingAsync();
         }
@@ -87,7 +90,6 @@ namespace CarmesinaConfig.comandos
                 await ctx.Channel.DeleteMessagesAsync(messages);
                 await ctx.Message.DeleteAsync();
                 await ctx.RespondAsync(simples.EmbedComum($"<:8bitminus:816411488091766795> `{qnts} deleted messages` ***No one will ever know what happened here... <:shy:816399461675696159>***"));
-                //await ctx.
             }
         }
 
