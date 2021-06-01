@@ -63,7 +63,7 @@ namespace CarmesinaConfig.comandos
                 {
                     int dano = 10 + ale.Next(10);
 
-                    inimigo.DarDano(dano,out dano);
+                    inimigo.DarDano(dano, out dano);
 
                     DiscordEmbedBuilder inimigoResultado = new DiscordEmbedBuilder()
                         .AddField(":small_orange_diamond: Protection:", $":shield: | **{inimigo.GetProtecao()}**", true)
@@ -90,6 +90,75 @@ namespace CarmesinaConfig.comandos
         }
 
     }
+
+    public class Player : Program
+    {
+        Random ale = new Random();
+
+        private int Nivel;
+        private string Nome;
+        private int Vida;
+        private bool Vivo;
+        private int Protecao;
+        private int Moedas;
+        private int Xp;
+
+        public Player(string nome = "Unknown", int nivel = 1, bool vivo = true)
+        {
+            if (nivel >= 1) this.Nivel = 1;
+            else this.Nivel = nivel;
+
+            this.Nome = nome;
+            this.Vivo = vivo;
+        }
+        public void DarDano(int dano)
+        {
+            int resultado = dano - this.Protecao;
+
+            if (resultado < 0) resultado = 0;
+
+            this.Vida -= resultado;
+
+            if (Vida < 0) Vida = 0;
+        }
+        public void DarDano(int dano, out int res)
+        {
+            int resultado = dano - this.Protecao;
+
+            if (resultado < 0) resultado = 0;
+
+            res = resultado;
+            this.Vida -= resultado;
+
+            if (Vida < 0) Vida = 0;
+        }
+        public void DarMoedas(int val)
+        {
+            this.Moedas += val;
+            if (this.Moedas >= 0) this.Moedas = 0;
+        }
+        public void ReduzirVida(int val)
+        {
+            Vida -= val;
+
+            if (Vida < 0) Vida = 0;
+        }
+        public bool Status()
+        {
+            if (this.Vida <= 0)
+            {
+                this.Vivo = false;
+                return false;
+            }
+            else return true;
+        }
+        public int GetXp() { return this.Xp; }
+        public int GetProtecao() { return this.Protecao; }
+        public string GetName() { return Nome; }
+        public int GetLife() { return Vida; }
+        public int GetNivel() { return Nivel; }
+    }
+
     public class Inimigo : Program
     {
         Random ale = new Random();
@@ -155,7 +224,11 @@ namespace CarmesinaConfig.comandos
 
         public bool Status()
         {
-            if (this.Vida <= 0) return false;
+            if (this.Vida <= 0)
+            {
+                this.Vivo = false;
+                return false;
+            }
             else return true;
         }
 

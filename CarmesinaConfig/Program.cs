@@ -63,6 +63,7 @@ namespace CarmesinaConfig
             cnt.RegisterCommands<Exclusivos>();
             cnt.RegisterCommands<diversao>();
             cnt.RegisterCommands<receitas>();
+            cnt.RegisterCommands<luta>();
 
             await _client.ConnectAsync();
             await Task.Delay(-1);
