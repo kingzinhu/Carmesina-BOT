@@ -2,6 +2,8 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
+using System.Data;
+using System.Data.SQLite;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -9,6 +11,9 @@ using System.Threading.Tasks;
 using CarmesinaConfig;
 using DSharpPlus.Interactivity.Extensions;
 using CarmesinaConfig.funcoes;
+using System.Net;
+using HtmlAgilityPack;
+using CarmesinaConfig.data_bank;
 
 namespace CarmesinaConfig.comandos
 {
@@ -17,7 +22,7 @@ namespace CarmesinaConfig.comandos
 
         [Command("test")]
         [Description("Test some function")]
-        public async Task Test(CommandContext ctx)
+        public async Task Test(CommandContext ctx, [RemainingText] string id = "")
         {
             await ctx.TriggerTypingAsync();
 
@@ -115,7 +120,7 @@ namespace CarmesinaConfig.comandos
             await ctx.TriggerTypingAsync();
             var embed = new DiscordEmbedBuilder()
                 .WithThumbnail("https://cdn.discordapp.com/attachments/816569715483738112/817164146453774336/githubcarmesina.png")
-                .WithAuthor("Kingzinhu", "https://twitter.com/kingzinhur", ctx.User.AvatarUrl)
+                .WithAuthor("Kingzinhu", "https://twitter.com/kingzinhur", "https://cdn.discordapp.com/attachments/816569715483738112/845712042682089532/2b104ee7173622c6bd5a8652c45f8bc6.png")
                 .WithTitle("<:GitHub:817168795302363177> Take a look on my GitHub repository ^-^")
                 .WithDescription("https://github.com/kingzinhu/Carmesina-BOT")
                 .WithColor(new DiscordColor("ffaafd"));
