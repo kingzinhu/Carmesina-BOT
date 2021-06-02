@@ -24,7 +24,7 @@ namespace CarmesinaConfig.comandos
             if (Db_luta.TemId(ctx.Member.Id.ToString())) await ctx.RespondAsync(simples.EmbedComum("Você já tem um save!"));
             else
             {
-                Db_luta.AddData(ctx.Member.Id.ToString());
+                Db_luta.AddData(ctx.Member.Id.ToString(), ctx.Member.Username);
                 await ctx.RespondAsync(simples.EmbedComum("Save criado!"));
             }
         }
@@ -35,89 +35,109 @@ namespace CarmesinaConfig.comandos
         {
             await ctx.TriggerTypingAsync();
 
+            if (nome == null) nome = "unknown";
+
             if (!Db_luta.TemId(ctx.Member.Id.ToString())) { 
                 await ctx.RespondAsync(simples.EmbedComum("Você precisa de um save!!! Ditie `c.registrar` para criar um novo save."));
             }
             else
             {
                 Random ale = new Random();
-                if (nome == null) nome = "unknown";
 
                 Inimigo inimigo = new Inimigo(nome, ale.Next(1, 15));
 
                 Player player = new Player(ctx.Member.Username,
-                int.Parse(Db_luta.GetValue(ctx.Member.Id.ToString(), "USER_LEVEL")),
+                int.Parse(Db_luta.GetValue(ctx.Member.Id.ToString(), "LEVEL")),
                 int.Parse(Db_luta.GetValue(ctx.Member.Id.ToString(), "COINS")),
-                int.Parse(Db_luta.GetValue(ctx.Member.Id.ToString(), "USER_XP")));
+                int.Parse(Db_luta.GetValue(ctx.Member.Id.ToString(), "XP")));
 
-                DiscordMessage log = await ctx.RespondAsync($"> ```• [Um(a) {inimigo.GetName()} selvagem apareceu!!!]```");
-
-                DiscordEmbedBuilder inimigoEmbed = new DiscordEmbedBuilder()
-                    .AddField(":small_orange_diamond: Protection:", $":shield: | **{inimigo.GetProtecao()}**", true)
-                    .AddField(":small_orange_diamond: Level:", $":arrow_up: | **{inimigo.GetNivel()}**", true)
-                    .WithImageUrl(inimigo.GetImageUrl())
-                    .WithAuthor(inimigo.GetName())
-                    .WithFooter("HP: " + inimigo.GetLife(), "https://cdn.discordapp.com/attachments/816569715483738112/841874844895412244/heart-56-76703.png")
-                    .WithColor(new DiscordColor("ffaafd"));
-
-                DiscordMessage mensagem = await ctx.RespondAsync(inimigoEmbed.Build());
-
-                DiscordEmoji emoji = DiscordEmoji.FromName(ctx.Client, ":crossed_swords:");
-
-            batalha:
-
-                await mensagem.CreateReactionAsync(emoji);
-
-                var reacao = await mensagem.WaitForReactionAsync(ctx.Member, TimeSpan.FromSeconds(8f));
-
-                if (!reacao.TimedOut)
+                while (player.Status() && inimigo.Status())
                 {
-                    if (reacao.Result.Emoji == emoji)
+                    DiscordEmbedBuilder inimigoEmbed = new DiscordEmbedBuilder()
+                        .AddField(":small_orange_diamond: Protection:", $":shield: | **{inimigo.GetProtecao()}**", true)
+                        .AddField(":small_orange_diamond: Level:", $":arrow_up: | **{inimigo.GetNivel()}**", true)
+                        .WithImageUrl(inimigo.GetImageUrl())
+                        .WithAuthor(inimigo.GetName())
+                        .WithFooter("HP: " + inimigo.GetLife(), "https://cdn.discordapp.com/attachments/816569715483738112/841874844895412244/heart-56-76703.png")
+                        .WithColor(new DiscordColor("ffaafd"));
+
+                    DiscordMessage log = await ctx.RespondAsync($"> ```• [Um(a) {inimigo.GetName()} selvagem apareceu!!!]```");
+                    DiscordMessage mensagem = await ctx.RespondAsync(inimigoEmbed.Build());
+
+                    DiscordEmoji espadas = DiscordEmoji.FromName(ctx.Client, ":crossed_swords:");
+                    DiscordEmoji escudo = DiscordEmoji.FromName(ctx.Client, ":shield:");
+
+                batalha:
+
+                    await mensagem.CreateReactionAsync(espadas);
+
+                    var reacoes = await mensagem.CollectReactionsAsync(TimeSpan.FromSeconds(5));
+                    List<string> atacantes = new List<string>();
+                    List<string> defensores = new List<string>();
+                    foreach (var reacao in reacoes)
                     {
-                        int dano = 10 + ale.Next(10);
-
-                        inimigo.DarDano(dano, out dano);
-
-                        DiscordEmbedBuilder inimigoResultado = new DiscordEmbedBuilder()
-                            .AddField(":small_orange_diamond: Protection:", $":shield: | **{inimigo.GetProtecao()}**", true)
-                            .AddField(":small_orange_diamond: Level:", $":arrow_up: | **{inimigo.GetNivel()}**", true)
-                            .WithImageUrl(inimigo.GetImageUrl())
-                            .WithAuthor(inimigo.GetName())
-                            .WithFooter("HP: " + inimigo.GetLife() + $"  (- {dano})", "https://cdn.discordapp.com/attachments/816569715483738112/841874844895412244/heart-56-76703.png")
-                            .WithColor(new DiscordColor("ffaafd"));
-
-                        DiscordEmbedBuilder inimigoMorto = new DiscordEmbedBuilder()
-                            .AddField(":small_orange_diamond: Protection:", $":shield: | **{inimigo.GetProtecao()}**", true)
-                            .AddField(":small_orange_diamond: Level:", $":arrow_up: | **{inimigo.GetNivel()}**", true)
-                            .WithImageUrl("https://cdn.discordapp.com/attachments/841867549427499009/841887792044179456/coffin.png")
-                            .WithAuthor(inimigo.GetName())
-                            .WithFooter("Dead " + $" (- {dano})", "https://cdn.discordapp.com/attachments/816569715483738112/841888256282591242/skull-147-450412.png")
-                            .WithColor(new DiscordColor("ffaafd"));
-
-                        await mensagem.DeleteAllReactionsAsync();
-
-                        if (inimigo.Status())
+                        foreach (var autor in reacao.Users)
                         {
-                            await mensagem.ModifyAsync(inimigoResultado.Build());
-
-                            goto batalha;
+                            if(autor.Id != 813623531043815444)
+                            {
+                                if (reacao.Emoji == espadas) atacantes.Add(autor.Id.ToString());
+                                if (reacao.Emoji == escudo) defensores.Add(autor.Id.ToString());
+                            }
                         }
-                        else await mensagem.ModifyAsync(inimigoMorto.Build());
                     }
+
+                    int dano = 0;
+                    foreach (string atacante in atacantes)
+                    {
+                        if (Db_luta.TemId(atacante))
+                        {
+                            int d = int.Parse(Db_luta.GetValue(atacante, "DAMAGE"));
+                            dano += d;
+                            log = await AddLogAsync(log, $"{ctx.Client.GetUserAsync(Convert.ToUInt64(atacante)).Result.Username} ataca {inimigo.GetName()} com {d} de força");
+                        }
+                    }
+
+                    inimigo.DarDano(dano, out dano);
+
+                    DiscordEmbedBuilder inimigoResultado = new DiscordEmbedBuilder()
+                        .AddField(":small_orange_diamond: Protection:", $":shield: | **{inimigo.GetProtecao()}**", true)
+                        .AddField(":small_orange_diamond: Level:", $":arrow_up: | **{inimigo.GetNivel()}**", true)
+                        .WithImageUrl(inimigo.GetImageUrl())
+                        .WithAuthor(inimigo.GetName())
+                        .WithFooter("HP: " + inimigo.GetLife() + $"  (- {dano})", "https://cdn.discordapp.com/attachments/816569715483738112/841874844895412244/heart-56-76703.png")
+                        .WithColor(new DiscordColor("ffaafd"));
+
+                    DiscordEmbedBuilder inimigoMorto = new DiscordEmbedBuilder()
+                        .AddField(":small_orange_diamond: Protection:", $":shield: | **{inimigo.GetProtecao()}**", true)
+                        .AddField(":small_orange_diamond: Level:", $":arrow_up: | **{inimigo.GetNivel()}**", true)
+                        .WithImageUrl("https://cdn.discordapp.com/attachments/841867549427499009/841887792044179456/coffin.png")
+                        .WithAuthor(inimigo.GetName())
+                        .WithFooter("Dead " + $" (- {dano})", "https://cdn.discordapp.com/attachments/816569715483738112/841888256282591242/skull-147-450412.png")
+                        .WithColor(new DiscordColor("ffaafd"));
+
+                    await mensagem.DeleteAllReactionsAsync();
+
+                    if (inimigo.Status())
+                    {
+                        await mensagem.ModifyAsync(inimigoResultado.Build());
+
+                        goto batalha;
+                    }
+                    else await mensagem.ModifyAsync(inimigoMorto.Build());
                 }
             }
-
-            
         }
         public static async void Atacando(Inimigo i, Player p, DiscordMessage log)
         {
             while (i.Status() && p.Status())
             {
+                int dano = i.GetDano();
                 await Task.Delay(3000);
-                p.DarDano(i.GetDano());
+                p.DarDano(dano, out dano);
+                await log.ModifyAsync($"{i.GetName()} ataca, dando {dano} de dano em {p.GetName()}");
             }
         }
-        public static async Task<DiscordMessage> AddLog(DiscordMessage log, string ato)
+        public static async Task<DiscordMessage> AddLogAsync(DiscordMessage log, string ato)
         {
             string cont = log.Content;
             if (simples.Count(cont, "]") >= 5)
@@ -148,6 +168,7 @@ namespace CarmesinaConfig.comandos
             if (nivel <= 1) this.Nivel = 1;
             else this.Nivel = nivel;
 
+            this.Vida = 10 * this.Nivel;
             this.Items = items;
             this.Xp = xp;
             this.Moedas = moedas;

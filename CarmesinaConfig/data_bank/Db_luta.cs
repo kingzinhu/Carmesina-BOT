@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SQLite;
+using DSharpPlus;
+using DSharpPlus.CommandsNext;
 
 namespace CarmesinaConfig.data_bank
 {
@@ -64,11 +66,11 @@ namespace CarmesinaConfig.data_bank
             return dt;
         }
 
-        public static void AddData(string id)
+        public static void AddData(string id, string nome)
         {
             if (!TemId(id))
             {
-                ExecutarComando($"INSERT INTO users_data (USER_ID, COINS, USER_LEVEL, USER_XP) VALUES ('{id}', '0', '1', '0')");
+                ExecutarComando($"INSERT INTO users_data (USER_NAME, USER_ID, LEVEL, HP, DAMAGE, COINS, PROTECTION, XP) VALUES ('{nome}', '{id}', '1', '50', '10', '0', '0', '0')");
             }
         }
     }
