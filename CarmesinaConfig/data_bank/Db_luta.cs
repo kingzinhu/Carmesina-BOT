@@ -5,6 +5,8 @@ using System.Data;
 using System.Data.SQLite;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using CarmesinaConfig.comandos;
+using CarmesinaConfig.classes;
 
 namespace CarmesinaConfig.data_bank
 {
@@ -54,6 +56,40 @@ namespace CarmesinaConfig.data_bank
             else return true;
         }
 
+        public static void UpdateData(string name, string id)
+        {
+            int xp = int.Parse(GetValue(id, "XP"));
+
+            UpdateValue(id, "USER_NAME", name);
+            UpdateValue(id, "LEVEL", Math.Floor(Math.Sqrt(xp/500)).ToString());
+
+            int lvl = int.Parse(GetValue(id, "LEVEL"));
+
+            UpdateValue(id, "DAMAGE", (lvl*4).ToString());
+            UpdateValue(id, "PROTECTION", lvl.ToString());
+            UpdateValue(id, "MAX_HP", (50 + lvl * 5).ToString());
+        }
+
+        public static void UpdateData(classes_luta.Player player)
+        {
+            int xp = int.Parse(GetValue(player.GetId().ToString(), "XP"));
+
+            UpdateValue(player.GetId().ToString(), "USER_NAME", player.GetName());
+            UpdateValue(player.GetId().ToString(), "LEVEL", Math.Floor(Math.Sqrt(xp / 500)).ToString());
+
+            int lvl = int.Parse(GetValue(player.GetId().ToString(), "LEVEL"));
+
+            UpdateValue(player.GetId().ToString(), "DAMAGE", (lvl * 4).ToString());
+            UpdateValue(player.GetId().ToString(), "PROTECTION", lvl.ToString());
+            UpdateValue(player.GetId().ToString(), "HP", player.GetLife().ToString());
+            UpdateValue(player.GetId().ToString(), "MAX_HP", (50 + lvl * 5).ToString());
+        }
+
+        public static void UpdateValue(string id, string field, string value)
+        {
+            ExecutarComando($"UPDATE users_data SET {field} = '{value}' WHERE USER_ID = '{id}'");
+        }
+
         public static DataTable GetData()
         {
             var dt = SelectDataTable("SELECT * FROM users_data");
@@ -70,7 +106,7 @@ namespace CarmesinaConfig.data_bank
         {
             if (!TemId(id))
             {
-                ExecutarComando($"INSERT INTO users_data (USER_NAME, USER_ID, LEVEL, HP, DAMAGE, COINS, PROTECTION, XP) VALUES ('{nome}', '{id}', '1', '50', '10', '0', '0', '0')");
+                ExecutarComando($"INSERT INTO users_data (USER_NAME, USER_ID, LEVEL, HP, MAX_HP, DAMAGE, COINS, PROTECTION, XP) VALUES ('{nome}', '{id}', '1', '50', '50', '10', '0', '0', '1500')");
             }
         }
     }

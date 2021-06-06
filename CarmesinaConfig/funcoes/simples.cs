@@ -99,7 +99,7 @@ namespace CarmesinaConfig.funcoes
         public static string TirarEspacos(string texto)
         {
             string resultado = "";
-            bool removido_primeiros = false;    //      bolinho   de chuva
+            bool removido_primeiros = false;
 
             foreach (char letra in texto)
             {
