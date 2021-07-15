@@ -15,7 +15,6 @@ namespace CarmesinaConfig
     public class Program
     {
         public DiscordClient _client;
- 
         static void Main(string[] args)
         { 
             new Program().RodarBotAsync().GetAwaiter().GetResult(); 
