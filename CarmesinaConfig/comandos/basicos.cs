@@ -26,6 +26,8 @@ namespace CarmesinaConfig.comandos
         {
             await ctx.TriggerTypingAsync();
 
+            await ctx.RespondAsync("opa");
+
             DiscordMessage mensagem = await ctx.RespondAsync("cu");
 
             DiscordEmoji emoji = DiscordEmoji.FromName(ctx.Client, ":thumbsup:");
